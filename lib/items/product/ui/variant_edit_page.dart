@@ -66,6 +66,8 @@ class _VariantEditPageState extends State<VariantEditPage> {
     final model = context.read<ProductVariantsModel>();
     final productDTO = context.read<ProductEditDTO>();
 
+    final barcode = _barcodeInputController.text;
+
     setState(() {
       if (_dto.name?.isEmpty ?? true) {
         valid = false;
@@ -77,10 +79,10 @@ class _VariantEditPageState extends State<VariantEditPage> {
         _priceInputError = "error-input-variant-price".localize();
       }
 
-      if (_dto.barcode != null && model.variants.any((e) => e.barcode != null && e != _dto && e.barcode == _dto.barcode)) {
+      if ((_dto.barcode?.isNotEmpty ?? false) && model.variants.any((e) => (e.barcode?.isNotEmpty ?? false) && e != _dto && e.barcode == barcode)) {
         valid = false;
         _barCodeInputError = "error-barcode-duplicate".localize();
-      } else if (productDTO.barcode != null && productDTO.barcode == _dto.barcode) {
+      } else if ((productDTO.barcode?.isNotEmpty ?? false) && productDTO.barcode == barcode) {
         valid = false;
         _barCodeInputError = "error-barcode-duplicate".localize();
       }

@@ -132,7 +132,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         _priceInputError = "error-input-product-price".localize();
       }
 
-      if (_variants.any((e) => e.barcode != null && e.barcode == _dto.barcode)) {
+      if (_variants.any((e) => (e.barcode?.isNotEmpty ?? false) && e.barcode == _dto.barcode)) {
         valid = false;
         _barCodeInputError = "error-barcode-duplicate".localize();
       }
@@ -477,7 +477,7 @@ class _VariantsCard extends StatelessWidget {
                   var dto = model.variants[i];
                   widgets.add(
                     InkWell(
-                      onTap: () => _navigateToEdit(context, dto: dto, index: i),
+                      onTap: () => _navigateToEdit(context, dto: dto.clone(), index: i),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: Row(

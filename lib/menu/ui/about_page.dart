@@ -145,6 +145,7 @@ class AboutPage extends StatelessWidget {
                   fontFamily: "Roboto",
                   color: Colors.white,
                   fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

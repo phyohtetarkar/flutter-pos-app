@@ -39,6 +39,7 @@ dependencies:
   fl_chart: ^0.12.0
   share: ^0.6.5+3
   shared_preferences: ^0.5.12+2
+  equatable: ^1.2.5
   data_source:
     path: packages/data_source
   pos_domain:

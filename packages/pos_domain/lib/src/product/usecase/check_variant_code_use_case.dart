@@ -12,6 +12,11 @@ class CheckBarCodeUseCaseImpl implements CheckBarCodeUseCase {
 
   @override
   Future<bool> checkVariantCodeDuplicate(String code, {int variantId}) {
+
+    if (code?.isEmpty ?? true) {
+      return Future.value(false);
+    }
+
     return _repo.getBarcodeByCode(code).then((value) {
       if (value == null) {
         return false;

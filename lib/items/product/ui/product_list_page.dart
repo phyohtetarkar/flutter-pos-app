@@ -251,7 +251,7 @@ class _ProductListItem extends StatelessWidget {
                       if (snapshot.data != null) {
                         return Image.file(
                           snapshot.data,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         );
                       }
                       return Image.asset(

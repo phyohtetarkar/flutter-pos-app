@@ -152,7 +152,7 @@ class ItemsPage extends StatelessWidget {
               onTap: () => _navigate(context, 3),
               title: Row(
                 children: [
-                  Icon(Icons.attach_money, color: Colors.grey[600]),
+                  Icon(Icons.monetization_on, color: Colors.grey[600]),
                   SizedBox(width: 16),
                   Text("label-taxes".localize()),
                 ],

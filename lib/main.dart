@@ -114,7 +114,7 @@ class _LaunchScreenPageState extends State<LaunchScreenPage> {
   void initState() {
     super.initState();
     _load();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 1), () {
       final serviceLocator = Provider.of<ServiceLocator>(context, listen: false);
       final route = createRoute(MultiProvider(
         providers: [
