@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:latte_pos/common/custom.dart';
 import 'package:latte_pos/items/items_page.dart';
@@ -269,10 +271,20 @@ class _MenuPageState extends State<MenuPage> {
         ),
         SafeArea(
           child: Container(
-            padding: const EdgeInsets.all(6),
+            margin: EdgeInsets.only(
+              bottom: Platform.isAndroid ? 12 : 6,
+            ),
             decoration: ShapeDecoration(
-              color: Colors.white,
+              color: Theme.of(context).accentColor,
               shape: CircleBorder(),
+              shadows: [
+                BoxShadow(
+                  color: Theme.of(context).accentColor.withOpacity(0.35),
+                  blurRadius: 8,
+                  spreadRadius: 1.5,
+                  offset: Offset(0.6, 0.6),
+                ),
+              ],
             ),
             child: FlatButton(
               padding: const EdgeInsets.all(14),

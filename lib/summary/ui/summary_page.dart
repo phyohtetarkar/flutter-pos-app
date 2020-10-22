@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:latte_pos/common/extensions.dart';
 import 'dart:math';
 
-const Map<int,String> _monthsInYear = {
+const Map<int, String> _monthsInYear = {
   1: "Jan",
   2: "Feb",
   3: "Mar",
@@ -28,7 +29,7 @@ const Map<int,String> _monthsInYear = {
   12: "Dec",
 };
 
-const Map<int,String> _weeks = {
+const Map<int, String> _weeks = {
   1: "Mon",
   2: "Tue",
   3: "Wed",
@@ -39,13 +40,11 @@ const Map<int,String> _weeks = {
 };
 
 class SummaryPage extends StatefulWidget {
-
   @override
   _SummaryPageState createState() => _SummaryPageState();
 }
 
 class _SummaryPageState extends State<SummaryPage> {
-
   final _dateFormat = DateFormat("hh:mm a", "en_US");
 
   Widget _buildRecentItem(RecentSaleItemDTO dto) {
@@ -148,7 +147,6 @@ class _SummaryPageState extends State<SummaryPage> {
   }
 
   LineChartData _chartData(Map<int, double> entries) {
-
     final largest = entries.values.reduce(max);
     final interval = largest > 0 ? largest ~/ 5 : 500;
 
@@ -273,6 +271,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
   @override
   Widget build(BuildContext context) {
+
     final _appBar = AppBar(
       automaticallyImplyLeading: false,
       elevation: 0,
@@ -435,7 +434,7 @@ class _SummaryPageState extends State<SummaryPage> {
                         ),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ],
@@ -443,10 +442,21 @@ class _SummaryPageState extends State<SummaryPage> {
         ),
         SafeArea(
           child: Container(
-            padding: const EdgeInsets.all(6),
+            //padding: const EdgeInsets.all(6),
+            margin: EdgeInsets.only(
+              bottom: Platform.isAndroid ? 12 : 6,
+            ),
             decoration: ShapeDecoration(
-              color: Colors.white,
+              color: Theme.of(context).accentColor,
               shape: CircleBorder(),
+              shadows: [
+                BoxShadow(
+                  color: Theme.of(context).accentColor.withOpacity(0.35),
+                  blurRadius: 8,
+                  spreadRadius: 1.5,
+                  offset: Offset(0.6, 0.6),
+                ),
+              ],
             ),
             child: FlatButton(
               padding: const EdgeInsets.all(14),
@@ -465,4 +475,3 @@ class _SummaryPageState extends State<SummaryPage> {
     );
   }
 }
-

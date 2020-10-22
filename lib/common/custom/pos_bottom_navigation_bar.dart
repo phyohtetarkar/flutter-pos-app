@@ -54,7 +54,6 @@ class POSBottomNavigationBar extends StatelessWidget {
     const menuImage = AssetImage("images/icons/menu.png");
 
     return BottomNavigationBar(
-      elevation: 0,
       backgroundColor: Colors.white,
       onTap: (index) => _navigate(context, index),
       currentIndex: currentIndex,

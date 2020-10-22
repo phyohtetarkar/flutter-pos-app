@@ -170,14 +170,24 @@ class _SalePageState extends State<SalePage> {
         ),
         SafeArea(
           child: Container(
-            padding: const EdgeInsets.all(6),
+            margin: EdgeInsets.only(
+              bottom: Platform.isAndroid ? 12 : 6,
+            ),
             decoration: ShapeDecoration(
-              color: Colors.white,
+              color: Theme.of(context).accentColor,
               shape: CircleBorder(),
+              shadows: [
+                BoxShadow(
+                  color: Theme.of(context).accentColor.withOpacity(0.35),
+                  blurRadius: 8,
+                  spreadRadius: 1.5,
+                  offset: Offset(0.6, 0.6),
+                ),
+              ],
             ),
             child: FlatButton(
               padding: const EdgeInsets.all(14),
-              onPressed: () => navigateToSale(context),
+              onPressed: () => {},
               child: Icon(
                 Icons.store_rounded,
                 color: Colors.white,
