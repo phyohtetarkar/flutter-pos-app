@@ -86,7 +86,7 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("${s.totalPrice.formatCurrency()}"),
-                      SizedBox(height: 4),
+                      //SizedBox(height: 4),
                       Text(
                         "${s.totalItem} item${s.totalItem > 1 ? 's' : ''}",
                         style: TextStyle(

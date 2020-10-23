@@ -18,6 +18,8 @@ class SaleItems extends Table with Auditor {
 
   IntColumn get quantity => integer()();
 
+  RealColumn get totalPrice => real()();
+
   RealColumn get discount => real().nullable()();
 
   RealColumn get tax => real().nullable()();
@@ -34,5 +36,31 @@ class SaleItemWithProduct {
     this.item,
     this.product,
     this.variant,
+  );
+}
+
+class DistinctSaleItem {
+  final String product;
+  final String variant;
+  final String image;
+  final double price;
+  final int quantity;
+
+  DistinctSaleItem({
+    this.product,
+    this.variant,
+    this.image,
+    this.price,
+    this.quantity,
+  });
+}
+
+class SaleByCategory {
+  final double totalPrice;
+  final Category category;
+
+  SaleByCategory(
+    this.totalPrice,
+    this.category,
   );
 }

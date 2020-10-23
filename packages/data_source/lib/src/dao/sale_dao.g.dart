@@ -11,4 +11,5 @@ mixin _$SaleDaoMixin on DatabaseAccessor<POSDatabase> {
   $SaleItemsTable get saleItems => attachedDatabase.saleItems;
   $ProductsTable get products => attachedDatabase.products;
   $VariantsTable get variants => attachedDatabase.variants;
+  $CategoriesTable get categories => attachedDatabase.categories;
 }

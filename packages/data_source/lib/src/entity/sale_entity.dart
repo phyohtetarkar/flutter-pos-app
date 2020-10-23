@@ -37,6 +37,16 @@ class SaleWithItemCount {
   );
 }
 
+class TotalSaleBalance {
+  final double totalPrice;
+  final double totalCost;
+
+  TotalSaleBalance({
+    this.totalPrice,
+    this.totalCost,
+  });
+}
+
 class MonthlySale {
   final int month;
   final double amount;

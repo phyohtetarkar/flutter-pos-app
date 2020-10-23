@@ -3478,6 +3478,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
   final double price;
   final double cost;
   final int quantity;
+  final double totalPrice;
   final double discount;
   final double tax;
   final int saleId;
@@ -3492,6 +3493,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
       @required this.price,
       this.cost,
       @required this.quantity,
+      @required this.totalPrice,
       this.discount,
       this.tax,
       @required this.saleId});
@@ -3520,6 +3522,8 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
       cost: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}cost']),
       quantity:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}quantity']),
+      totalPrice: doubleType
+          .mapFromDatabaseResponse(data['${effectivePrefix}total_price']),
       discount: doubleType
           .mapFromDatabaseResponse(data['${effectivePrefix}discount']),
       tax: doubleType.mapFromDatabaseResponse(data['${effectivePrefix}tax']),
@@ -3560,6 +3564,9 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
     if (!nullToAbsent || quantity != null) {
       map['quantity'] = Variable<int>(quantity);
     }
+    if (!nullToAbsent || totalPrice != null) {
+      map['total_price'] = Variable<double>(totalPrice);
+    }
     if (!nullToAbsent || discount != null) {
       map['discount'] = Variable<double>(discount);
     }
@@ -3599,6 +3606,9 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
       quantity: quantity == null && nullToAbsent
           ? const Value.absent()
           : Value(quantity),
+      totalPrice: totalPrice == null && nullToAbsent
+          ? const Value.absent()
+          : Value(totalPrice),
       discount: discount == null && nullToAbsent
           ? const Value.absent()
           : Value(discount),
@@ -3622,6 +3632,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
       price: serializer.fromJson<double>(json['price']),
       cost: serializer.fromJson<double>(json['cost']),
       quantity: serializer.fromJson<int>(json['quantity']),
+      totalPrice: serializer.fromJson<double>(json['totalPrice']),
       discount: serializer.fromJson<double>(json['discount']),
       tax: serializer.fromJson<double>(json['tax']),
       saleId: serializer.fromJson<int>(json['saleId']),
@@ -3641,6 +3652,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
       'price': serializer.toJson<double>(price),
       'cost': serializer.toJson<double>(cost),
       'quantity': serializer.toJson<int>(quantity),
+      'totalPrice': serializer.toJson<double>(totalPrice),
       'discount': serializer.toJson<double>(discount),
       'tax': serializer.toJson<double>(tax),
       'saleId': serializer.toJson<int>(saleId),
@@ -3658,6 +3670,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
           double price,
           double cost,
           int quantity,
+          double totalPrice,
           double discount,
           double tax,
           int saleId}) =>
@@ -3672,6 +3685,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
         price: price ?? this.price,
         cost: cost ?? this.cost,
         quantity: quantity ?? this.quantity,
+        totalPrice: totalPrice ?? this.totalPrice,
         discount: discount ?? this.discount,
         tax: tax ?? this.tax,
         saleId: saleId ?? this.saleId,
@@ -3689,6 +3703,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
           ..write('price: $price, ')
           ..write('cost: $cost, ')
           ..write('quantity: $quantity, ')
+          ..write('totalPrice: $totalPrice, ')
           ..write('discount: $discount, ')
           ..write('tax: $tax, ')
           ..write('saleId: $saleId')
@@ -3718,9 +3733,13 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
                                       $mrjc(
                                           quantity.hashCode,
                                           $mrjc(
-                                              discount.hashCode,
-                                              $mrjc(tax.hashCode,
-                                                  saleId.hashCode)))))))))))));
+                                              totalPrice.hashCode,
+                                              $mrjc(
+                                                  discount.hashCode,
+                                                  $mrjc(
+                                                      tax.hashCode,
+                                                      saleId
+                                                          .hashCode))))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -3735,6 +3754,7 @@ class SaleItem extends DataClass implements Insertable<SaleItem> {
           other.price == this.price &&
           other.cost == this.cost &&
           other.quantity == this.quantity &&
+          other.totalPrice == this.totalPrice &&
           other.discount == this.discount &&
           other.tax == this.tax &&
           other.saleId == this.saleId);
@@ -3751,6 +3771,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
   final Value<double> price;
   final Value<double> cost;
   final Value<int> quantity;
+  final Value<double> totalPrice;
   final Value<double> discount;
   final Value<double> tax;
   final Value<int> saleId;
@@ -3765,6 +3786,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
     this.price = const Value.absent(),
     this.cost = const Value.absent(),
     this.quantity = const Value.absent(),
+    this.totalPrice = const Value.absent(),
     this.discount = const Value.absent(),
     this.tax = const Value.absent(),
     this.saleId = const Value.absent(),
@@ -3780,6 +3802,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
     @required double price,
     this.cost = const Value.absent(),
     @required int quantity,
+    @required double totalPrice,
     this.discount = const Value.absent(),
     this.tax = const Value.absent(),
     @required int saleId,
@@ -3789,6 +3812,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
         productName = Value(productName),
         price = Value(price),
         quantity = Value(quantity),
+        totalPrice = Value(totalPrice),
         saleId = Value(saleId);
   static Insertable<SaleItem> custom({
     Expression<int> createdAt,
@@ -3801,6 +3825,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
     Expression<double> price,
     Expression<double> cost,
     Expression<int> quantity,
+    Expression<double> totalPrice,
     Expression<double> discount,
     Expression<double> tax,
     Expression<int> saleId,
@@ -3816,6 +3841,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
       if (price != null) 'price': price,
       if (cost != null) 'cost': cost,
       if (quantity != null) 'quantity': quantity,
+      if (totalPrice != null) 'total_price': totalPrice,
       if (discount != null) 'discount': discount,
       if (tax != null) 'tax': tax,
       if (saleId != null) 'sale_id': saleId,
@@ -3833,6 +3859,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
       Value<double> price,
       Value<double> cost,
       Value<int> quantity,
+      Value<double> totalPrice,
       Value<double> discount,
       Value<double> tax,
       Value<int> saleId}) {
@@ -3847,6 +3874,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
       price: price ?? this.price,
       cost: cost ?? this.cost,
       quantity: quantity ?? this.quantity,
+      totalPrice: totalPrice ?? this.totalPrice,
       discount: discount ?? this.discount,
       tax: tax ?? this.tax,
       saleId: saleId ?? this.saleId,
@@ -3886,6 +3914,9 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
     if (quantity.present) {
       map['quantity'] = Variable<int>(quantity.value);
     }
+    if (totalPrice.present) {
+      map['total_price'] = Variable<double>(totalPrice.value);
+    }
     if (discount.present) {
       map['discount'] = Variable<double>(discount.value);
     }
@@ -3911,6 +3942,7 @@ class SaleItemsCompanion extends UpdateCompanion<SaleItem> {
           ..write('price: $price, ')
           ..write('cost: $cost, ')
           ..write('quantity: $quantity, ')
+          ..write('totalPrice: $totalPrice, ')
           ..write('discount: $discount, ')
           ..write('tax: $tax, ')
           ..write('saleId: $saleId')
@@ -4045,6 +4077,18 @@ class $SaleItemsTable extends SaleItems
     );
   }
 
+  final VerificationMeta _totalPriceMeta = const VerificationMeta('totalPrice');
+  GeneratedRealColumn _totalPrice;
+  @override
+  GeneratedRealColumn get totalPrice => _totalPrice ??= _constructTotalPrice();
+  GeneratedRealColumn _constructTotalPrice() {
+    return GeneratedRealColumn(
+      'total_price',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _discountMeta = const VerificationMeta('discount');
   GeneratedRealColumn _discount;
   @override
@@ -4090,6 +4134,7 @@ class $SaleItemsTable extends SaleItems
         price,
         cost,
         quantity,
+        totalPrice,
         discount,
         tax,
         saleId
@@ -4161,6 +4206,14 @@ class $SaleItemsTable extends SaleItems
           quantity.isAcceptableOrUnknown(data['quantity'], _quantityMeta));
     } else if (isInserting) {
       context.missing(_quantityMeta);
+    }
+    if (data.containsKey('total_price')) {
+      context.handle(
+          _totalPriceMeta,
+          totalPrice.isAcceptableOrUnknown(
+              data['total_price'], _totalPriceMeta));
+    } else if (isInserting) {
+      context.missing(_totalPriceMeta);
     }
     if (data.containsKey('discount')) {
       context.handle(_discountMeta,

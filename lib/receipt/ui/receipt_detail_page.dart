@@ -69,7 +69,7 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text("${e.quantity}  x"),
+                            Text("${e.quantity}  \u2715"),
                             SizedBox(width: 8),
                             Builder(
                               builder: (_) {

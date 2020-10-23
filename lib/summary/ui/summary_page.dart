@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:latte_pos/common/custom.dart';
@@ -117,14 +118,19 @@ class _SummaryPageState extends State<SummaryPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${dto.totalPrice.formatCurrency()}",
+                  "${dto.price.formatCurrency()}",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 //SizedBox(height: 4),
                 Text(
-                  "${_dateFormat.format(dto.issueAt)}",
+                  "${dto.quantity} \u2715",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

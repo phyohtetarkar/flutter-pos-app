@@ -23,7 +23,7 @@ abstract class SaleRepo {
 
   Future<List<SaleDTO>> findStatic(SaleSearch search);
 
-  Future<List<RecentSaleItemDTO>> getRecentSaleItems(int limit);
+  Future<List<RecentSaleItemDTO>> getRecentSaleItems({DateTime dateTime});
 
   Future<Map<int, double>> getMonthlySales(int year);
 

@@ -72,8 +72,8 @@ class SaleRepoImpl implements SaleRepo {
   }
 
   @override
-  Future<List<RecentSaleItemDTO>> getRecentSaleItems(int limit) {
-    return _dao.getRecentSaleItems(limit).then((list) => list.map((e) => e.toData()).toList());
+  Future<List<RecentSaleItemDTO>> getRecentSaleItems({DateTime dateTime}) {
+    return _dao.getDistinctSaleItems(dateTime: dateTime).then((list) => list.map((e) => e.toData()).toList());
   }
 
   @override

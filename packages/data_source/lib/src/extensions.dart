@@ -198,6 +198,10 @@ extension SaleItemExtension on SaleItem {
       quantity: quantity,
     );
   }
+
+  double get _total => price * quantity;
+
+  double get totalPrice => _total - (_total * (discount ?? 0));
 }
 
 extension SaleDTOExtension on SaleDTO {
@@ -229,6 +233,7 @@ extension SaleItemDTOExtension on SaleItemDTO {
       price: Value(price),
       cost: Value(cost),
       quantity: Value(quantity),
+      totalPrice: Value(totalPrice),
       discount: Value(discount),
       tax: Value(tax),
     );
@@ -238,16 +243,22 @@ extension SaleItemDTOExtension on SaleItemDTO {
 extension SaleItemWithProductExtension on SaleItemWithProduct {
   RecentSaleItemDTO toData() {
     return RecentSaleItemDTO(
-      saleId: item.saleId,
-      saleItemId: item.id,
-      productId: item.productId,
       productName: product?.name ?? item.productName,
       variantName: variant?.name ?? item.variantName,
       image: product?.image,
       price: item.price,
-      discount: item.discount,
-      quantity: item.quantity,
-      saleAt: item.createdAt,
+    );
+  }
+}
+
+extension DistinctSaleItemExtension on DistinctSaleItem {
+  RecentSaleItemDTO toData() {
+    return RecentSaleItemDTO(
+      productName: product,
+      variantName: variant,
+      image: image,
+      price: price,
+      quantity: quantity,
     );
   }
 }

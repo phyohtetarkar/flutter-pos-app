@@ -2,7 +2,7 @@ import 'package:pos_domain/src/sale/recent_sale_item_dto.dart';
 import 'package:pos_domain/src/sale/sale_repo.dart';
 
 abstract class GetRecentSaleItemUseCase {
-  Future<List<RecentSaleItemDTO>> getRecentSaleItems();
+  Future<List<RecentSaleItemDTO>> getRecentSaleItems({DateTime dateTime});
 }
 
 class GetRecentSaleItemUseCaseImpl implements GetRecentSaleItemUseCase {
@@ -12,8 +12,8 @@ class GetRecentSaleItemUseCaseImpl implements GetRecentSaleItemUseCase {
   GetRecentSaleItemUseCaseImpl(this._repo);
 
   @override
-  Future<List<RecentSaleItemDTO>> getRecentSaleItems() {
-    return _repo.getRecentSaleItems(10);
+  Future<List<RecentSaleItemDTO>> getRecentSaleItems({DateTime dateTime}) {
+    return _repo.getRecentSaleItems(dateTime: dateTime);
   }
 
 }
