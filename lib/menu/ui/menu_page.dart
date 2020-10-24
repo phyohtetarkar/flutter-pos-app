@@ -6,6 +6,7 @@ import 'package:latte_pos/items/items_page.dart';
 import 'package:latte_pos/main.dart';
 import 'package:latte_pos/menu/ui/about_page.dart';
 import 'package:latte_pos/receipt/ui/receipt_list_page.dart';
+import 'package:latte_pos/report/ui/report_page.dart';
 import 'package:latte_pos/service_locator.dart';
 import 'package:provider/provider.dart';
 import 'package:latte_pos/common/extensions.dart';
@@ -36,6 +37,13 @@ class _MenuPageState extends State<MenuPage> {
         ));
         break;
       case 2:
+        route = createRoute(MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => serviceLocator.overallReportModel),
+            ChangeNotifierProvider(create: (_) => serviceLocator.saleByYearModel),
+          ],
+          child: ReportPage(),
+        ));
         break;
     }
 

@@ -287,7 +287,7 @@ class _SaleCompletePageState extends State<SaleCompletePage> {
                                 ),
                               ),
                               Text(
-                                "${model.sale?.totalPrice?.formatCurrency() ?? 0}",
+                                "${model.sale?.totalSalePrice?.formatCurrency() ?? 0}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,

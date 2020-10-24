@@ -39,7 +39,7 @@ class _DiscountEditPageState extends State<DiscountEditPage> {
         value: double.tryParse(_valueInputController.text),
         type: _discountType,
       );
-      Provider.of<DiscountEditModel>(context, listen: false).save(dto).then((value) {
+      context.read<DiscountEditModel>().save(dto).then((value) {
         Navigator.of(context).pop();
       }, onError: (error) {
         setState(() {

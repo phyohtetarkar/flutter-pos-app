@@ -35,7 +35,7 @@ class _TaxEditPageState extends State<TaxEditPage> {
         name: _nameInputController.text,
         value: double.tryParse(_valueInputController.text),
       );
-      Provider.of<TaxEditModel>(context, listen: false).save(dto).then((value) {
+      context.read<TaxEditModel>().save(dto).then((value) {
         Navigator.of(context).pop();
       }, onError: (error) {
         setState(() {

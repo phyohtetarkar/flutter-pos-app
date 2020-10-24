@@ -26,7 +26,11 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
       child: ReceiptDetailPage(saleId: saleId),
     ));
 
-    Navigator.of(context).push(route);
+    Navigator.of(context).push(route).then((value) {
+      if (value != null && value is bool && value) {
+        context.read<ReceiptListModel>().find();
+      }
+    });
   }
 
   @override
@@ -85,7 +89,7 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("${s.totalPrice.formatCurrency()}"),
+                      Text("${s.totalSalePrice.formatCurrency()}"),
                       //SizedBox(height: 4),
                       Text(
                         "${s.totalItem} item${s.totalItem > 1 ? 's' : ''}",

@@ -75,7 +75,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> with TickerProvider
       },
     ).then((value) {
       if (value ?? false) {
-        Provider.of<CategoryEditModel>(context, listen: false).delete(widget.category.id).then(
+        context.read<CategoryEditModel>().delete(widget.category.id).then(
           (value) {
             Navigator.of(context).pop();
           },

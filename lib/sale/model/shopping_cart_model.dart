@@ -35,7 +35,7 @@ class ShoppingCartModel extends ChangeNotifier {
 
   double get subTotalPrice => _subTotalPrice;
 
-  double get totalPrice => _totalPrice;
+  double get totalSalePrice => _totalPrice + _tax;
 
   int get totalItem => _totalItem;
 
@@ -168,9 +168,9 @@ class ShoppingCartModel extends ChangeNotifier {
       _discount += item.computedDiscount;
       _tax += item.computedTax;
       _subTotalPrice += (item.total);
-      _totalPrice = (_subTotalPrice - _discount) + _tax;
+      _totalPrice = (_subTotalPrice - _discount);
       _totalItem += item.quantity;
-      _totalCost += item.cost ?? 0;
+      _totalCost += item.totalCost ?? 0;
     }
   }
 }

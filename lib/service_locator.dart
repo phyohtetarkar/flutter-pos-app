@@ -1,6 +1,8 @@
 import 'package:data_source/data_source.dart';
 import 'package:latte_pos/receipt/model/receipt_detail_model.dart';
 import 'package:latte_pos/receipt/model/receipt_list_model.dart';
+import 'package:latte_pos/report/model/overall_report_model.dart';
+import 'package:latte_pos/report/model/sale_by_year_model.dart';
 import 'package:latte_pos/sale/model/edit_sale_item_model.dart';
 import 'package:latte_pos/sale/model/sale_complete_model.dart';
 import 'package:latte_pos/sale/model/shopping_cart_model.dart';
@@ -57,6 +59,10 @@ abstract class ServiceLocator {
   RecentSaleItemsModel get recentSaleItemsModel;
 
   SummaryChartDataModel get summaryChartDataModel;
+
+  OverallReportModel get overallReportModel;
+
+  SaleByYearModel get saleByYearModel;
 
   void close();
 }
@@ -224,6 +230,8 @@ class DefaultServiceLocator extends ServiceLocator {
     final saleRepo = SaleRepoImpl(_db.saleDao);
     return ReceiptDetailModel(
       GetSaleDetailUseCaseImpl(saleRepo),
+      DeleteSaleUseCaseImpl(saleRepo),
+      _db,
     );
   }
 
@@ -244,8 +252,23 @@ class DefaultServiceLocator extends ServiceLocator {
   }
 
   @override
+  OverallReportModel get overallReportModel {
+    final saleRepo = SaleRepoImpl(_db.saleDao);
+    return OverallReportModel(
+      GetOverallSaleReportImpl(saleRepo),
+    );
+  }
+
+  @override
+  SaleByYearModel get saleByYearModel {
+    final saleRepo = SaleRepoImpl(_db.saleDao);
+    return SaleByYearModel(
+      GetMonthlySaleUseCaseImpl(saleRepo),
+    );
+  }
+
+  @override
   void close() {
     _db.close();
   }
-
 }

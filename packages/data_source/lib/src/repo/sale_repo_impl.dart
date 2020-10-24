@@ -47,6 +47,11 @@ class SaleRepoImpl implements SaleRepo {
   }
 
   @override
+  Future removeSaleItemsBySale(int saleId) {
+    return _dao.removeSaleItemBySale(saleId);
+  }
+
+  @override
   Future<List<SaleDTO>> findStatic(SaleSearch search) {
     return _dao.findStatic(search).then((list) => list.map((e) => e.toData()).toList());
   }
@@ -99,5 +104,25 @@ class SaleRepoImpl implements SaleRepo {
       return result;
     });
   }
+
+  @override
+  Future<SaleReportDTO> getOverallSaleReport() async {
+    final balance = await _dao.getTotalSaleBalance();
+    final list = await _dao.getSaleByCategory();
+
+    return SaleReportDTO(
+      totalPrice: balance.totalPrice,
+      totalCost: balance.totalCost,
+      list: list.map((e) {
+        return SaleByCategoryDTO(
+          categoryName: e.category.name,
+          totalPrice: e.totalPrice,
+          color: e.category.color,
+        );
+      }).toList(),
+    );
+  }
+
+
 
 }

@@ -43,8 +43,12 @@ export 'src/sale/sale_repo.dart';
 export 'src/sale/usecase/build_item_use_case.dart';
 export 'src/sale/usecase/get_bar_code_use_case.dart';
 export 'src/sale/usecase/create_sale_use_case.dart';
+export 'src/sale/usecase/delete_sale_use_case.dart';
 export 'src/sale/usecase/get_sale_detail_use_case.dart';
 export 'src/sale/usecase/get_all_sale_use_case.dart';
 export 'src/sale/usecase/get_recent_sale_item_use_case.dart';
 export 'src/sale/usecase/get_monthly_sale_use_case.dart';
 export 'src/sale/usecase/get_weekly_sales_use_case.dart';
+
+export 'src/report/sale_report_dto.dart';
+export 'src/report/usecase/get_overall_sale_report.dart';

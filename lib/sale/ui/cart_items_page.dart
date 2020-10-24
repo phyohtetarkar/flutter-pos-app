@@ -170,7 +170,7 @@ class CartItemsPage extends StatelessWidget {
                   color: Colors.white,
                   border: Border(
                     top: BorderSide(
-                      color: Colors.grey,
+                      color: Colors.grey[400],
                       width: 0.5,
                     ),
                   ),
@@ -241,7 +241,7 @@ class CartItemsPage extends StatelessWidget {
                           ),
                         ),
                         trailing: Text(
-                          "${model.totalPrice.formatCurrency()}",
+                          "${model.totalSalePrice.formatCurrency()}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

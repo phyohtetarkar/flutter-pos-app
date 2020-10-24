@@ -1,4 +1,6 @@
 
+import 'package:pos_domain/src/report/sale_report_dto.dart';
+
 import 'recent_sale_item_dto.dart';
 import 'sale_detail_dto.dart';
 import 'sale_dto.dart';
@@ -17,6 +19,8 @@ abstract class SaleRepo {
 
   Future removeSaleItem(int id);
 
+  Future removeSaleItemsBySale(int saleId);
+
   Future<SaleDetailDTO> getSaleDetail(int saleId);
 
   Future<List<SaleItemDTO>> getSaleItems(int saleId);
@@ -28,5 +32,7 @@ abstract class SaleRepo {
   Future<Map<int, double>> getMonthlySales(int year);
 
   Future<Map<int, double>> getWeeklySales(int start, int end);
+
+  Future<SaleReportDTO> getOverallSaleReport();
 
 }

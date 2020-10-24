@@ -12,6 +12,8 @@ class SaleDTO {
   int totalItem;
   int createdAt;
 
+  double get totalSalePrice => totalPrice + (tax ?? 0);
+
   DateTime get issueAt => DateTime.fromMillisecondsSinceEpoch(createdAt, isUtc: true).toLocal();
 
   SaleDTO({

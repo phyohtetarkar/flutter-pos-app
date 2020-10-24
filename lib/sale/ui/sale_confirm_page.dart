@@ -119,7 +119,7 @@ class SaleConfirmPage extends StatelessWidget {
                   child: Consumer<ShoppingCartModel>(
                     builder: (context, model, child) {
                       return Text(
-                        "${model.totalPrice.formatCurrency()}",
+                        "${model.totalSalePrice.formatCurrency()}",
                         style: labelStyle,
                       );
                     },

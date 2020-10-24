@@ -25,7 +25,9 @@ class SaleItemDTO {
 
   double get computedTax => tax * (total - computedDiscount);
 
-  double get totalPrice => (total - computedDiscount) + computedTax;
+  double get totalPrice => (total - computedDiscount);
+
+  double get totalCost => (cost ?? 0) * quantity;
 
   SaleItemDTO({
     this.id,

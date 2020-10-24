@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:latte_pos/common/custom/pos_confirm_dialog.dart';
 import 'package:latte_pos/main.dart';
 import 'package:latte_pos/receipt/model/receipt_detail_model.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,37 @@ class ReceiptDetailPage extends StatefulWidget {
 }
 
 class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
+
+  final _globalKey = GlobalKey<ScaffoldState>();
+
+  void _delete() {
+    showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return POSConfirmDialog(
+          message: "msg-confirm-delete".localize(),
+          okButtonText: "label-delete".localize(),
+          okTextColor: dangerColor,
+        );
+      },
+    ).then((value) {
+      if (value ?? false) {
+        context.read<ReceiptDetailModel>().deleteSale(widget.saleId).then((value) {
+          Navigator.of(context).pop(true);
+        }, onError: (error) {
+          final snackBar = SnackBar(
+            content: Text(
+              "Unable to delete sale.",
+            ),
+            backgroundColor: dangerColor,
+          );
+          _globalKey.currentState.showSnackBar(snackBar);
+        });
+      }
+    });
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -30,11 +63,19 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
       title: Text(
         "label-sale-items".localize(),
       ),
+      actions: [
+        IconButton(
+          icon: Icon(FontAwesomeIcons.trashAlt, size: 20),
+          tooltip: "label-delete".localize(),
+          onPressed: _delete,
+        ),
+      ],
     );
     final labelStyle = TextStyle(
       fontSize: 16,
     );
     return Scaffold(
+      key: _globalKey,
       backgroundColor: bgColor,
       appBar: _appBar,
       body: Consumer<ReceiptDetailModel>(
@@ -115,7 +156,7 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
                   color: Colors.white,
                   border: Border(
                     top: BorderSide(
-                      color: Colors.grey,
+                      color: Colors.grey[400],
                       width: 0.5,
                     ),
                   ),
@@ -173,7 +214,7 @@ class _ReceiptDetailPageState extends State<ReceiptDetailPage> {
                           ),
                         ),
                         trailing: Text(
-                          "${model.sale?.totalPrice?.formatCurrency() ?? 0}",
+                          "${model.sale?.totalSalePrice?.formatCurrency() ?? 0}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
