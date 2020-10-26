@@ -312,99 +312,267 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     final _appBar = AppBar(
+      elevation: 0,
       title: Text(
         "label-reports".localize(),
       ),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     bottomLeft: Radius.circular(24),
+      //     bottomRight: Radius.circular(24),
+      //   ),
+      // ),
+      // bottom: PreferredSize(
+      //   preferredSize: Size.fromHeight(80),
+      //   child: Container(
+      //     alignment: Alignment.center,
+      //     height: 80,
+      //     padding: const EdgeInsets.symmetric(vertical: 10),
+      //     child: Consumer<OverallReportModel>(
+      //       builder: (context, model, child) {
+      //         return Row(
+      //           crossAxisAlignment: CrossAxisAlignment.stretch,
+      //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //           children: [
+      //             Expanded(
+      //               child: Align(
+      //                 alignment: Alignment.center,
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: [
+      //                     Text(
+      //                       "label-total-sale".localize(),
+      //                       overflow: TextOverflow.ellipsis,
+      //                       style: TextStyle(
+      //                         fontWeight: FontWeight.bold,
+      //                         fontSize: 16,
+      //                         color: Colors.white.withOpacity(0.8),
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 8),
+      //                     Text(
+      //                       "${model.totalPrice.formatCurrency()}",
+      //                       style: TextStyle(
+      //                         fontWeight: FontWeight.bold,
+      //                         color: Colors.white,
+      //                         fontSize: 16,
+      //                         fontFamily: "Roboto",
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ),
+      //             ),
+      //             VerticalDivider(width: 1, color: Colors.white54),
+      //             Expanded(
+      //               child: Align(
+      //                 alignment: Alignment.center,
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: [
+      //                     Text(
+      //                       "label-total-profit".localize(),
+      //                       overflow: TextOverflow.ellipsis,
+      //                       style: TextStyle(
+      //                         fontWeight: FontWeight.bold,
+      //                         fontSize: 16,
+      //                         color: Colors.white.withOpacity(0.8),
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 8),
+      //                     Text(
+      //                       "${model.totalProfit.formatCurrency()}",
+      //                       style: TextStyle(
+      //                         fontWeight: FontWeight.bold,
+      //                         color: Colors.white,
+      //                         fontSize: 16,
+      //                         fontFamily: "Roboto",
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ),
+      //             ),
+      //           ],
+      //         );
+      //       },
+      //     ),
+      //   ),
+      // ),
     );
     return Scaffold(
       appBar: _appBar,
       backgroundColor: bgColor,
       body: Stack(
         children: [
-          // ClipPath(
-          //   //clipper: POSArcClipper(70),
-          //   child: Container(
-          //     height: 120,
-          //     color: Theme.of(context).primaryColor,
-          //   ),
-          // ),
+          ClipPath(
+            //clipper: POSArcClipper(70),
+            child: Container(
+              height: 60,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
           ListView(
-            padding: const EdgeInsets.all(rootPadding),
+            padding: const EdgeInsets.only(
+              top: 8,
+              left: rootPadding,
+              right: rootPadding,
+              bottom: rootPadding,
+            ),
             children: [
-              Consumer<OverallReportModel>(
-                builder: (context, model, child) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: Card(
-                          margin: const EdgeInsets.all(0),
-                          //color: Colors.purple,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "label-total-sale".localize(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    //color: Colors.white,
+              // Consumer<OverallReportModel>(
+              //   builder: (context, model, child) {
+              //     return Row(
+              //       children: [
+              //         Expanded(
+              //           child: Card(
+              //             margin: const EdgeInsets.all(0),
+              //             //color: Colors.purple,
+              //             child: Padding(
+              //               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.stretch,
+              //                 children: [
+              //                   Text(
+              //                     "label-total-sale".localize(),
+              //                     overflow: TextOverflow.ellipsis,
+              //                     style: TextStyle(
+              //                       fontWeight: FontWeight.bold,
+              //                       fontSize: 16,
+              //                       //color: Colors.white,
+              //                     ),
+              //                   ),
+              //                   SizedBox(height: 8),
+              //                   Text(
+              //                     "${model.totalPrice.formatCurrency()}",
+              //                     style: TextStyle(
+              //                       fontWeight: FontWeight.bold,
+              //                       color: Colors.grey[600],
+              //                       fontSize: 16,
+              //                       fontFamily: "Roboto",
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //         SizedBox(width: 10),
+              //         Expanded(
+              //           child: Card(
+              //             margin: const EdgeInsets.all(0),
+              //             //color: Colors.blue[600],
+              //             child: Padding(
+              //               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.stretch,
+              //                 children: [
+              //                   Text(
+              //                     "label-total-profit".localize(),
+              //                     overflow: TextOverflow.ellipsis,
+              //                     style: TextStyle(
+              //                       fontWeight: FontWeight.bold,
+              //                       fontSize: 16,
+              //                       //color: Colors.white,
+              //                     ),
+              //                   ),
+              //                   SizedBox(height: 8),
+              //                   Text(
+              //                     "${model.totalProfit.formatCurrency()}",
+              //                     style: TextStyle(
+              //                       fontWeight: FontWeight.bold,
+              //                       color: Colors.grey[600],
+              //                       fontSize: 16,
+              //                       fontFamily: "Roboto",
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     );
+              //   },
+              // ),
+              // SizedBox(height: 10)
+              Card(
+                margin: const EdgeInsets.all(0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                  height: 100,
+                  child: Consumer<OverallReportModel>(
+                    builder: (context, model, child) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "label-total-sale".localize(),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  "${model.totalPrice.formatCurrency()}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[600],
-                                    fontSize: 16,
-                                    fontFamily: "Roboto",
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "${model.totalPrice.formatCurrency()}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 20,
+                                      fontFamily: "Roboto",
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Card(
-                          margin: const EdgeInsets.all(0),
-                          //color: Colors.blue[600],
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "label-total-profit".localize(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    //color: Colors.white,
+                          VerticalDivider(width: 28, color: Colors.grey[400]),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "label-total-profit".localize(),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  "${model.totalProfit.formatCurrency()}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[600],
-                                    fontSize: 16,
-                                    fontFamily: "Roboto",
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "${model.totalProfit.formatCurrency()}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 20,
+                                      fontFamily: "Roboto",
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                        ],
+                      );
+                    },
+                  ),
+                ),
               ),
               SizedBox(height: 10),
               Consumer<OverallReportModel>(
