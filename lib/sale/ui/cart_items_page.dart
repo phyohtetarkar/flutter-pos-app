@@ -123,7 +123,7 @@ class CartItemsPage extends StatelessWidget {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("${e.quantity}  \u2715"),
+                              Text("${e.quantity}  x"),
                               SizedBox(width: 8),
                               Builder(
                                 builder: (_) {

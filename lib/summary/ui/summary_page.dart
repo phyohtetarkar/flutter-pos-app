@@ -110,7 +110,7 @@ class _SummaryPageState extends State<SummaryPage> {
                 ),
                 //SizedBox(height: 4),
                 Text(
-                  "${dto.quantity} \u2715",
+                  "${dto.quantity} x",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12,

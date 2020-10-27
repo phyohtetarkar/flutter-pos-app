@@ -316,89 +316,6 @@ class _ReportPageState extends State<ReportPage> {
       title: Text(
         "label-reports".localize(),
       ),
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.only(
-      //     bottomLeft: Radius.circular(24),
-      //     bottomRight: Radius.circular(24),
-      //   ),
-      // ),
-      // bottom: PreferredSize(
-      //   preferredSize: Size.fromHeight(80),
-      //   child: Container(
-      //     alignment: Alignment.center,
-      //     height: 80,
-      //     padding: const EdgeInsets.symmetric(vertical: 10),
-      //     child: Consumer<OverallReportModel>(
-      //       builder: (context, model, child) {
-      //         return Row(
-      //           crossAxisAlignment: CrossAxisAlignment.stretch,
-      //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //           children: [
-      //             Expanded(
-      //               child: Align(
-      //                 alignment: Alignment.center,
-      //                 child: Column(
-      //                   crossAxisAlignment: CrossAxisAlignment.start,
-      //                   children: [
-      //                     Text(
-      //                       "label-total-sale".localize(),
-      //                       overflow: TextOverflow.ellipsis,
-      //                       style: TextStyle(
-      //                         fontWeight: FontWeight.bold,
-      //                         fontSize: 16,
-      //                         color: Colors.white.withOpacity(0.8),
-      //                       ),
-      //                     ),
-      //                     SizedBox(height: 8),
-      //                     Text(
-      //                       "${model.totalPrice.formatCurrency()}",
-      //                       style: TextStyle(
-      //                         fontWeight: FontWeight.bold,
-      //                         color: Colors.white,
-      //                         fontSize: 16,
-      //                         fontFamily: "Roboto",
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ),
-      //             ),
-      //             VerticalDivider(width: 1, color: Colors.white54),
-      //             Expanded(
-      //               child: Align(
-      //                 alignment: Alignment.center,
-      //                 child: Column(
-      //                   crossAxisAlignment: CrossAxisAlignment.start,
-      //                   children: [
-      //                     Text(
-      //                       "label-total-profit".localize(),
-      //                       overflow: TextOverflow.ellipsis,
-      //                       style: TextStyle(
-      //                         fontWeight: FontWeight.bold,
-      //                         fontSize: 16,
-      //                         color: Colors.white.withOpacity(0.8),
-      //                       ),
-      //                     ),
-      //                     SizedBox(height: 8),
-      //                     Text(
-      //                       "${model.totalProfit.formatCurrency()}",
-      //                       style: TextStyle(
-      //                         fontWeight: FontWeight.bold,
-      //                         color: Colors.white,
-      //                         fontSize: 16,
-      //                         fontFamily: "Roboto",
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 ),
-      //               ),
-      //             ),
-      //           ],
-      //         );
-      //       },
-      //     ),
-      //   ),
-      // ),
     );
     return Scaffold(
       appBar: _appBar,
@@ -537,7 +454,13 @@ class _ReportPageState extends State<ReportPage> {
                               ),
                             ),
                           ),
-                          VerticalDivider(width: 28, color: Colors.grey[400]),
+                          VerticalDivider(
+                            width: 28,
+                            thickness: 1,
+                            color: Colors.grey[400],
+                            indent: 10,
+                            endIndent: 10,
+                          ),
                           Expanded(
                             child: Align(
                               alignment: Alignment.center,
