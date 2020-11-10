@@ -51,7 +51,7 @@ class TaxListPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final t = snapshot.data[index];
               return Dismissible(
-                key: Key("${t.id}"),
+                key: ValueKey(t.id),
                 direction: DismissDirection.endToStart,
                 confirmDismiss: (direction) {
                   return showDialog<bool>(

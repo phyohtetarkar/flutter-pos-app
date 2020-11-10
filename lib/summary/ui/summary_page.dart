@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:latte_pos/common/custom.dart';
 import 'package:latte_pos/main.dart';
 import 'package:latte_pos/summary/model/summary_chart_data_model.dart';
@@ -30,7 +29,7 @@ class SummaryPage extends StatefulWidget {
 }
 
 class _SummaryPageState extends State<SummaryPage> {
-  final _dateFormat = DateFormat("hh:mm a", "en_US");
+  //final _dateFormat = DateFormat("hh:mm a", "en_US");
 
   Widget _buildRecentItem(RecentSaleItemDTO dto) {
     return InkWell(

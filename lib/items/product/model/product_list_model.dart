@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:data_source/data_source.dart';
@@ -18,17 +19,53 @@ class ProductListModel extends ChangeNotifier {
   final GetAllProductWithCategoryUseCase _findAllUseCase;
   final DeleteProductUseCase _deleteUseCase;
 
-  ProductSearch _search = ProductSearch();
+  ProductSearch _search = ProductSearch(offset: 0, limit: 15);
+
+  bool _onLoad = false;
+
+  List<ProductDTO> _products = [];
+
+  UnmodifiableListView<ProductDTO> get products => UnmodifiableListView(_products);
 
   ProductSearch get search => _search;
 
   set search(ProductSearch search) {
     _search = search;
-    notifyListeners();
+    findStatic();
   }
 
   Stream<List<ProductDTO>> find() {
     return _findAllUseCase.find(_search);
+  }
+
+  void findStatic() {
+    _onLoad = true;
+    _search.offset = 0;
+    _findAllUseCase.findStatic(_search).then((list) {
+      _products = list;
+      notifyListeners();
+      _onLoad = false;
+    });
+  }
+
+  void loadMore() {
+    if (!_onLoad) {
+      _onLoad = true;
+      _search.offset += _search.limit;
+      _findAllUseCase.findStatic(_search).then((list) {
+        _products.addAll(list);
+        notifyListeners();
+        _onLoad = false;
+        if (list.isEmpty) {
+          _search.offset -= _search.limit;
+        }
+      });
+    }
+  }
+
+  void remove(int id) {
+    _products.removeWhere((p) => p.id == id);
+    notifyListeners();
   }
 
   Future delete(int id, {String image}) {

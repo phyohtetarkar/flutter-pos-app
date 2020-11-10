@@ -41,8 +41,8 @@ class _CategoryEditPageState extends State<CategoryEditPage> with TickerProvider
 
   TextEditingController _nameInputController;
   ScrollController _colorScrollController;
-  AnimationController _controller;
-  Animation<Offset> _offset;
+  //AnimationController _controller;
+  //Animation<Offset> _offset;
 
   final _globalKey = GlobalKey<ScaffoldState>();
 

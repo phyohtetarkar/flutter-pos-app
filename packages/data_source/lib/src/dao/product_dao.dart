@@ -243,7 +243,7 @@ class ProductDao extends DatabaseAccessor<POSDatabase> with _$ProductDaoMixin {
       query.where(products.categoryId.equals(search.categoryId));
     }
 
-    if (search.name != null) {
+    if (search.name != null && search.name.isNotEmpty) {
       query.where(products.name.lower().like("${search.name.toLowerCase()}%"));
     }
 

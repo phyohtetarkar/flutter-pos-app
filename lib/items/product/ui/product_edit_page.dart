@@ -71,7 +71,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       if (value ?? false) {
         final model = context.read<ProductEditModel>();
         model.delete(widget.productId, image: model.editDTO?.image).then((value) {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(true);
         }, onError: (error) {
           final snackBar = SnackBar(
             content: Text(
@@ -95,7 +95,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             taxes: context.read<ProductTaxesModel>().taxes,
           )
           .then((value) {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(true);
       }, onError: (error) {
         final snackBar = SnackBar(
           content: Text(

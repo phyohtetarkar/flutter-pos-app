@@ -49,7 +49,7 @@ class CategoryListPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final c = snapshot.data[index];
               return Dismissible(
-                key: Key("${c.id}"),
+                key: ValueKey(c.id),
                 direction: DismissDirection.endToStart,
                 confirmDismiss: (direction) {
                   return showDialog<bool>(

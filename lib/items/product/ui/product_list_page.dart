@@ -33,7 +33,32 @@ class _ProductListPageState extends State<ProductListPage> {
       child: ProductEditPage(productId: productId),
     );
     final route = productId > 0 ? createRoute(page) : createModalRoute(page);
-    Navigator.of(context).push(route);
+    Navigator.of(context).push(route).then((value) {
+      if (value ?? false) {
+        context.read<ProductListModel>().findStatic();
+      }
+    });
+  }
+
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        context.read<ProductListModel>().loadMore();
+      }
+    });
+    context.read<ProductListModel>().findStatic();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,8 +73,7 @@ class _ProductListPageState extends State<ProductListPage> {
             return POSSearchTextField(
               hint: "hint-search".localize(),
               onChange: (value) {
-                final model = context.read<ProductListModel>();
-                model.search = model.search.copyWith(
+                pm.search = pm.search.copyWith(
                   name: value,
                 );
               },
@@ -69,8 +93,9 @@ class _ProductListPageState extends State<ProductListPage> {
               onPressed: () {
                 model.searchState = !model.searchState;
                 if (!model.searchState && (pm.search.name?.isNotEmpty ?? false)) {
-                  pm.search.name = null;
-                  pm.search = pm.search;
+                  pm.search = pm.search.copyWith(
+                    name: "",
+                  );
                 }
               },
             );
@@ -91,7 +116,8 @@ class _ProductListPageState extends State<ProductListPage> {
             ),
           ),
           child: StreamBuilder<List<CategoryDTO>>(
-            stream: Provider.of<AllCategoryModel>(context, listen: false).getAll(),
+            stream:
+                Provider.of<AllCategoryModel>(context, listen: false).getAll(),
             builder: (context, snapshot) {
               return Consumer<ProductListModel>(
                 builder: (context, model, child) {
@@ -112,13 +138,16 @@ class _ProductListPageState extends State<ProductListPage> {
                         selected: selected,
                         onSelected: (selected) {
                           if (selected) {
-                            model.search = model.search.copyWith(categoryId: c.id);
+                            model.search =
+                                model.search.copyWith(categoryId: c.id);
                           } else {
                             model.search.categoryId = null;
                             model.search = model.search;
                           }
                         },
-                        avatar: selected ? Icon(Icons.check_circle, color: Colors.white) : null,
+                        avatar: selected
+                            ? Icon(Icons.check_circle, color: Colors.white)
+                            : null,
                         selectedColor: Theme.of(context).primaryColor,
                       );
                     },
@@ -146,61 +175,60 @@ class _ProductListPageState extends State<ProductListPage> {
       ),
       body: Consumer<ProductListModel>(
         builder: (context, model, child) {
-          return StreamBuilder<List<ProductDTO>>(
-            stream: model.find(),
-            builder: (context, snapshot) {
-              return ListView.separated(
-                itemCount: snapshot.data?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final p = snapshot.data[index];
-                  return Dismissible(
-                    key: Key("${p.id}"),
-                    direction: DismissDirection.endToStart,
-                    confirmDismiss: (direction) {
-                      return showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return POSConfirmDialog(
-                            message: "msg-confirm-delete".localize(),
-                            okButtonText: "label-delete".localize(),
-                            okTextColor: dangerColor,
-                          );
-                        },
-                      ).then((value) {
-                        if (value ?? false) {
-                          return model.delete(p.id, image: p.image).then((value) => true, onError: (error) {
-                            final snackBar = SnackBar(
-                              content: Text(
-                                "Unable to delete product.",
-                              ),
-                              backgroundColor: dangerColor,
-                            );
-                            Scaffold.of(context).showSnackBar(snackBar);
-                            return false;
-                          });
-                        }
+          return ListView.separated(
+            controller: _scrollController,
+            itemCount: model.products.length ?? 0,
+            itemBuilder: (context, index) {
+              final p = model.products[index];
+              return Dismissible(
+                key: ValueKey(p.id),
+                direction: DismissDirection.endToStart,
+                confirmDismiss: (direction) {
+                  return showDialog<bool>(
+                    context: context,
+                    builder: (context) {
+                      return POSConfirmDialog(
+                        message: "msg-confirm-delete".localize(),
+                        okButtonText: "label-delete".localize(),
+                        okTextColor: dangerColor,
+                      );
+                    },
+                  ).then((value) {
+                    if (value ?? false) {
+                      return model.delete(p.id, image: p.image).then((value) {
+                        model.remove(p.id);
+                        return true;
+                      }, onError: (error) {
+                        final snackBar = SnackBar(
+                          content: Text(
+                            "Unable to delete product.",
+                          ),
+                          backgroundColor: dangerColor,
+                        );
+                        Scaffold.of(context).showSnackBar(snackBar);
                         return false;
                       });
-                    },
-                    onDismissed: (direction) {},
-                    background: Container(
-                      color: dangerColor,
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ),
-                    child: _ProductListItem(
-                      dto: p,
-                      onTap: () => _navigateToEdit(context, productId: p.id),
-                    ),
-                  );
+                    }
+                    return false;
+                  });
                 },
-                separatorBuilder: (context, index) => Divider(height: 1, color: Colors.transparent),
+                onDismissed: (direction) {},
+                background: Container(
+                  color: dangerColor,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+                child: _ProductListItem(
+                  dto: p,
+                  onTap: () => _navigateToEdit(context, productId: p.id),
+                ),
               );
             },
+            separatorBuilder: (context, index) => Divider(height: 1, color: Colors.transparent),
           );
         },
       ),
@@ -288,7 +316,9 @@ class _ProductListItem extends StatelessWidget {
               ),
               SizedBox(width: 16),
               Text(
-                dto.variant > 0 ? "${dto.variant} Variant${dto.variant > 1 ? 's' : ''}" : dto.price?.formatCurrency(),
+                dto.variant > 0
+                    ? "${dto.variant} Variant${dto.variant > 1 ? 's' : ''}"
+                    : dto.price?.formatCurrency(),
                 style: TextStyle(
                   color: Colors.grey[700],
                 ),

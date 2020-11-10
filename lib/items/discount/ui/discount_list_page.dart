@@ -50,7 +50,7 @@ class DiscountListPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final d = snapshot.data[index];
               return Dismissible(
-                key: Key("${d.id}"),
+                key: ValueKey(d.id),
                 direction: DismissDirection.endToStart,
                 confirmDismiss: (direction) {
                   return showDialog<bool>(

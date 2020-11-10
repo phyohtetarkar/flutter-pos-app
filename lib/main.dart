@@ -51,7 +51,6 @@ class MyApp extends StatelessWidget {
     // SystemChrome.setSystemUIOverlayStyle(
     //   SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     // );
-    final serviceLocator = Provider.of<ServiceLocator>(context, listen: false);
 
     return MaterialApp(
       title: 'POS Flutter',
