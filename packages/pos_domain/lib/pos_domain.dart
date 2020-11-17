@@ -49,6 +49,7 @@ export 'src/sale/usecase/get_all_sale_use_case.dart';
 export 'src/sale/usecase/get_recent_sale_item_use_case.dart';
 export 'src/sale/usecase/get_monthly_sale_use_case.dart';
 export 'src/sale/usecase/get_weekly_sales_use_case.dart';
+export 'src/sale/usecase/get_sale_amount_use_case.dart';
 
 export 'src/report/sale_report_dto.dart';
 export 'src/report/usecase/get_overall_sale_report.dart';

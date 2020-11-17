@@ -5,17 +5,21 @@ import 'package:pos_domain/pos_domain.dart';
 
 class ReceiptListModel extends ChangeNotifier {
 
-  ReceiptListModel(this._useCase);
+  ReceiptListModel(this._useCase, this._amountUseCase);
 
   final GetAllSaleUseCase _useCase;
+  final GetSaleAmountUseCase _amountUseCase;
 
   SaleSearch _search = SaleSearch(offset: 0, limit: 25);
 
   bool _onLoad = false;
 
   List<SaleDTO> _receipts = [];
+  double _totalAmount = 0;
 
   UnmodifiableListView<SaleDTO> get receipts => UnmodifiableListView(_receipts);
+
+  double get totalAmount => _totalAmount ?? 0;
 
   SaleSearch get search => _search;
 
@@ -24,14 +28,18 @@ class ReceiptListModel extends ChangeNotifier {
     find();
   }
 
-  void find() {
+  set date(DateTime date) {
+    _search.date = date;
+    find();
+  }
+
+  Future find() async {
     _onLoad = true;
     _search.offset = 0;
-    _useCase.getAll(_search).then((list) {
-      _receipts = list;
-      notifyListeners();
-      _onLoad = false;
-    });
+    _receipts = await _useCase.getAll(_search);
+    _totalAmount = await _amountUseCase.getSaleAmount(_search);
+    notifyListeners();
+    _onLoad = false;
   }
 
   void loadMore() {

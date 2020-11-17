@@ -301,6 +301,39 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
+  Future<int> _chooseYear() async {
+    final current = DateTime.now().year;
+    final list = List.generate(current > 2020 ? (current - 2020) + 1 : 1, (index) => 2020 + index);
+    return showDialog<int>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(0),
+            content: Container(
+              width: double.minPositive,
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  final value = list[index];
+                  return ListTile(
+                    title: Text("$value"),
+                    onTap: () {
+                      Navigator.pop(context, list[index]);
+                    },
+                    trailing: Icon(
+                      year == value ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                      color: year == value ? Theme.of(context).primaryColor : Colors.grey,
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => Divider(height: 1),
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   void initState() {
     year = DateTime.now().year;
@@ -446,7 +479,7 @@ class _ReportPageState extends State<ReportPage> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontFamily: "Roboto",
                                     ),
                                   ),
@@ -483,7 +516,7 @@ class _ReportPageState extends State<ReportPage> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontFamily: "Roboto",
                                     ),
                                   ),
@@ -635,7 +668,12 @@ class _ReportPageState extends State<ReportPage> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  context.read<SaleByYearModel>().find(year);
+                                  _chooseYear().then((value) {
+                                    if (value != null && value > 0 && value != year) {
+                                      year = value;
+                                      context.read<SaleByYearModel>().find(year);
+                                    }
+                                  });
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
@@ -647,7 +685,7 @@ class _ReportPageState extends State<ReportPage> {
                                     ),
                                   ),
                                   child: Text(
-                                    "2020",
+                                    "$year",
                                     style: TextStyle(
                                       color: Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.bold,

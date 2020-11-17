@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:latte_pos/common/extensions.dart';
 
 class ReceiptListPage extends StatefulWidget {
-
   @override
   _ReceiptListPageState createState() => _ReceiptListPageState();
 }
@@ -33,11 +32,40 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
     });
   }
 
+  Future _filterByDate() async {
+    final model = context.read<ReceiptListModel>();
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: model.search.date ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      cancelText: "label-cancel".localize(),
+      confirmText: "label-ok".localize(),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light().copyWith(
+              primary: Theme.of(context).primaryColor,
+            ), 
+            primaryColor: Theme.of(context).primaryColor,//selection color
+            dialogBackgroundColor: Colors.white, //Background color
+          ),
+          child: child,
+        );
+      },
+    );
+
+    if (picked != null && picked != model.search.date) {
+      model.date = picked;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         context.read<ReceiptListModel>().loadMore();
       }
     });
@@ -58,7 +86,70 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
         "label-receipts".localize(),
       ),
       actions: [
+        IconButton(
+          icon: Icon(Icons.today),
+          onPressed: _filterByDate,
+        ),
       ],
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(56),
+        child: Container(
+          height: 56,
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              bottom: BorderSide(
+                color: Colors.grey[400],
+                width: 0.7,
+              ),
+            ),
+          ),
+          child: Consumer<ReceiptListModel>(
+            builder: (context, model, child) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Builder(
+                      builder: (context) {
+                        final date = model.search.date;
+                        final format = DateFormat("MMM dd, yyyy");
+                        if (date != null) {
+                          return RawChip(
+                            label: Text(
+                              format.format(date),
+                            ),
+                            onDeleted: () {
+                              model.date = null;
+                            },
+                          );
+                        }
+                        return Text(
+                          "label-all-receipts".localize(),
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        );
+                      },
+                    ),
+                    Spacer(),
+                    Text(
+                      model.totalAmount.formatCurrency(),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                        fontFamily: "Roboto",
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
     return Scaffold(
       backgroundColor: bgColor,
@@ -75,7 +166,7 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
                 child: ListTile(
                   onTap: () => _navigateToDetail(s.id),
                   title: Text(
-                    "${10000 + s.id}",
+                    s.code,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -89,7 +180,7 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("${s.totalSalePrice.formatCurrency()}"),
+                      Text("${s.totalPrice.formatCurrency()}"),
                       //SizedBox(height: 4),
                       Text(
                         "${s.totalItem} item${s.totalItem > 1 ? 's' : ''}",
@@ -103,7 +194,8 @@ class _ReceiptListPageState extends State<ReceiptListPage> {
                 ),
               );
             },
-            separatorBuilder: (context, index) => Divider(height: 1, color: Colors.transparent),
+            separatorBuilder: (context, index) =>
+                Divider(height: 1, color: Colors.transparent),
           );
         },
       ),

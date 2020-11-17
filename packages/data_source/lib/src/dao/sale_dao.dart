@@ -53,6 +53,21 @@ class SaleDao extends DatabaseAccessor<POSDatabase> with _$SaleDaoMixin {
     return (select(saleItems)..where((tb) => tb.saleId.equals(saleId))).get();
   }
 
+  Future<double> findSaleAmount(SaleSearch search) {
+    final totalPrice = sales.totalPrice.sum();
+    final query = selectOnly(sales)..addColumns([totalPrice]);
+
+    if (search.date != null) {
+      final dt = search.date;
+      var from = DateTime(dt.year, dt.month, dt.day).toUtc().millisecondsSinceEpoch;
+      var to = DateTime(dt.year, dt.month, dt.day, 23, 59, 59).toUtc().millisecondsSinceEpoch;
+
+      query.where(sales.createdAt.isBetween(Variable(from), Variable(to)));
+    }
+
+    return query.map((row) => row.read(totalPrice)).getSingle();
+  }
+
   Future<List<SaleWithItemCount>> findStatic(SaleSearch search) {
     final itemCount = saleItems.id.count();
     final query = select(sales).join([
@@ -62,6 +77,14 @@ class SaleDao extends DatabaseAccessor<POSDatabase> with _$SaleDaoMixin {
     query
       ..addColumns([itemCount])
       ..groupBy([sales.id]);
+
+    if (search.date != null) {
+      final dt = search.date;
+      var from = DateTime(dt.year, dt.month, dt.day).toUtc().millisecondsSinceEpoch;
+      var to = DateTime(dt.year, dt.month, dt.day, 23, 59, 59).toUtc().millisecondsSinceEpoch;
+
+      query.where(sales.createdAt.isBetween(Variable(from), Variable(to)));
+    }
 
     if ((search.limit ?? 0) > 0) {
       query.limit(search.limit, offset: search.offset);

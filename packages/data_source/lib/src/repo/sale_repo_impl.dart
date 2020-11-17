@@ -123,6 +123,9 @@ class SaleRepoImpl implements SaleRepo {
     );
   }
 
-
+  @override
+  Future<double> findSaleAmount(SaleSearch search) {
+    return _dao.findSaleAmount(search);
+  }
 
 }

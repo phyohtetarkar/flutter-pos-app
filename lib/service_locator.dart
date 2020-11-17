@@ -222,6 +222,7 @@ class DefaultServiceLocator extends ServiceLocator {
     final saleRepo = SaleRepoImpl(_db.saleDao);
     return ReceiptListModel(
       GetAllSaleUseCaseImpl(saleRepo),
+      GetSaleAmountUseCaseImpl(saleRepo),
     );
   }
 
