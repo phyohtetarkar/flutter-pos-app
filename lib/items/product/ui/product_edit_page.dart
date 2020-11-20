@@ -13,6 +13,7 @@ import 'package:latte_pos/items/product/ui/variant_edit_page.dart';
 import 'package:latte_pos/main.dart';
 import 'package:latte_pos/service_locator.dart';
 import 'package:pos_domain/pos_domain.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:latte_pos/common/extensions.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,6 +45,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   TextEditingController _barcodeInputController;
 
   final _globalKey = GlobalKey<ScaffoldState>();
+
+  ProgressDialog progress;
 
   void _navigateToCategoryChoice() {
     final serviceLocator = Provider.of<ServiceLocator>(context, listen: false);
@@ -85,18 +88,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
     });
   }
 
-  void _save() {
+  Future _save() async {
     if (_validateInputs()) {
-      context
-          .read<ProductEditModel>()
-          .save(
-            variants: context.read<ProductVariantsModel>().allVariants,
-            discounts: context.read<ProductDiscountsModel>().discounts,
-            taxes: context.read<ProductTaxesModel>().taxes,
-          )
-          .then((value) {
+      await progress.show();
+      try {
+        await context.read<ProductEditModel>().save(
+          variants: context.read<ProductVariantsModel>().allVariants,
+          discounts: context.read<ProductDiscountsModel>().discounts,
+          taxes: context.read<ProductTaxesModel>().taxes,
+        );
+        await progress.hide();
         Navigator.of(context).pop(true);
-      }, onError: (error) {
+      } catch (error) {
+        await progress.hide();
         final snackBar = SnackBar(
           content: Text(
             error?.toString()?.localize() ?? "Something went wrong.",
@@ -104,7 +108,23 @@ class _ProductEditPageState extends State<ProductEditPage> {
           backgroundColor: dangerColor,
         );
         _globalKey.currentState.showSnackBar(snackBar);
-      });
+      }
+
+      // context.read<ProductEditModel>().save(
+      //   variants: context.read<ProductVariantsModel>().allVariants,
+      //   discounts: context.read<ProductDiscountsModel>().discounts,
+      //   taxes: context.read<ProductTaxesModel>().taxes,
+      // ).then((value) {
+      //   Navigator.of(context).pop(true);
+      // }, onError: (error) {
+      //   final snackBar = SnackBar(
+      //     content: Text(
+      //       error?.toString()?.localize() ?? "Something went wrong.",
+      //     ),
+      //     backgroundColor: dangerColor,
+      //   );
+      //   _globalKey.currentState.showSnackBar(snackBar);
+      // });
     }
   }
 
@@ -185,6 +205,26 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _priceInputController = TextEditingController();
     _costInputController = TextEditingController();
     _barcodeInputController = TextEditingController();
+
+    progress = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: false,
+      showLogs: false,
+      customBody: Container(
+        height: 64,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          "Saving ...",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            fontFamily: "Roboto",
+          ),
+        ),
+      ),
+    );
     super.initState();
 
     _loadProduct();
@@ -196,6 +236,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _priceInputController.dispose();
     _costInputController.dispose();
     _barcodeInputController.dispose();
+
+    progress = null;
     super.dispose();
   }
 

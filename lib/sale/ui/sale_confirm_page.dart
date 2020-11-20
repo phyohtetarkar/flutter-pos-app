@@ -56,7 +56,7 @@ class SaleConfirmPage extends StatelessWidget {
   void _save(BuildContext context, {bool skip = false}) {
     final model = context.read<ShoppingCartModel>();
 
-    if ((model.change ?? 0) <= 0 && !skip) {
+    if ((model.change ?? -1) < 0 && !skip) {
       return;
     }
 

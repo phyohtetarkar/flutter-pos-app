@@ -1,4 +1,4 @@
-package com.neuron.pos_flutter
+package com.phyohtet.latte_pos
 
 import io.flutter.embedding.android.FlutterActivity
 

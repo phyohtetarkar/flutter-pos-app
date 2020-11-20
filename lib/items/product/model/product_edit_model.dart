@@ -1,10 +1,11 @@
-import 'dart:io';
+import 'dart:io' as IO;
 
 import 'package:data_source/data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:latte_pos/main.dart';
 import 'package:pos_domain/pos_domain.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as IMG;
 
 class ProductEditModel extends ChangeNotifier {
   ProductEditModel(
@@ -44,8 +45,9 @@ class ProductEditModel extends ChangeNotifier {
       String old = editDTO.image;
       String newImage;
       if (editDTO.imageFile != null) {
-        final path = editDTO.imageFile.path;
-        final extension = path.substring(path.lastIndexOf('.'));
+        //final path = editDTO.imageFile.path;
+        //final extension = path.substring(path.lastIndexOf('.'));
+        final extension = ".png";
         newImage = "${DateTime.now().toIso8601String()}$extension";
       }
 
@@ -67,8 +69,8 @@ class ProductEditModel extends ChangeNotifier {
       await _deleteUseCase.delete(id);
       if (image != null) {
         final doc = await getApplicationDocumentsDirectory();
-        final dir = Directory("${doc.path}/$imageRoot");
-        final file = File("${dir.path}/$image");
+        final dir = IO.Directory("${doc.path}/$imageRoot");
+        final file = IO.File("${dir.path}/$image");
         final exist = await file.exists();
         if (exist) {
           file.delete();
@@ -77,18 +79,31 @@ class ProductEditModel extends ChangeNotifier {
     });
   }
 
-  Future _saveImage(File original, {String name, String old}) async {
+  Future _saveImage(IO.File original, {String name, String old}) async {
     final doc = await getApplicationDocumentsDirectory();
-    final dir = Directory("${doc.path}/$imageRoot");
+    final dir = IO.Directory("${doc.path}/$imageRoot");
     final exist = await dir.exists();
     if (!exist) {
       await dir.create(recursive: true);
     }
 
     if (original == null && old != null) {
-      await File("${dir.path}/$old").delete();
+      await IO.File("${dir.path}/$old").delete();
     } else if (original != null){
-      await original.copy("${dir.path}/$name");
+      // Read a jpeg image from file.
+      final bytes = await original.readAsBytes();
+      IMG.Image image = await Future(() => IMG.decodeImage(bytes));
+
+      //print("before: ${image.length / 1024}");
+
+      // Resize the image to a 120x? thumbnail (maintaining the aspect ratio).
+      IMG.Image thumbnail = await Future(() => IMG.copyResize(image, width: 480));
+
+      //print("after: ${thumbnail.length / 1024}");
+
+      await IO.File("${dir.path}/$name").writeAsBytes(await Future(() => IMG.encodePng(thumbnail)));
+
+      //await original.copy("${dir.path}/$name");
     }
   }
 
