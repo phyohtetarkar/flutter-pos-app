@@ -42,7 +42,7 @@ class ShoppingCartModel extends ChangeNotifier {
   void setPayPrice(int price) {
     payPrice = price;
     if (price != null) {
-      change = payPrice - _totalPrice;
+      change = payPrice - totalSalePrice;
     } else {
       change = null;
     }
