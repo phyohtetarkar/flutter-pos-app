@@ -25,7 +25,8 @@ class ShoppingCartModel extends ChangeNotifier {
   double _totalCost = 0;
   int _totalItem = 0;
   double change;
-  int payPrice;
+  double payPrice;
+  List<String> inputPrice = [];
 
   UnmodifiableListView<SaleItemDTO> get items => UnmodifiableListView(_items.where((e) => !e.removed));
 
@@ -39,7 +40,23 @@ class ShoppingCartModel extends ChangeNotifier {
 
   int get totalItem => _totalItem;
 
-  void setPayPrice(int price) {
+  void setInputPrice(String value) {
+    if ((inputPrice.isEmpty || inputPrice.contains(".")) && value == ".") {
+      return;
+    }
+
+    inputPrice.add(value);
+    String price = inputPrice.join();
+    if (inputPrice.isNotEmpty && inputPrice.last != ".") {
+      setPayPrice(double.tryParse(price));
+    } else if (inputPrice.isEmpty) {
+      setPayPrice(null);
+    } else {
+      notifyListeners();
+    }
+  }
+
+  void setPayPrice(double price) {
     payPrice = price;
     if (price != null) {
       change = payPrice - totalSalePrice;

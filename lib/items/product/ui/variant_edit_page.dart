@@ -178,7 +178,7 @@ class _VariantEditPageState extends State<VariantEditPage> {
                           label: "${'label-price'.localize()} *",
                           hint: "hint-enter-variant-price".localize(),
                           errorText: _priceInputError,
-                          inputType: TextInputType.number,
+                          inputType: TextInputType.numberWithOptions(decimal: true),
                           onChanged: (value) {
                             _dto.price = double.tryParse(value);
                           },
@@ -188,7 +188,7 @@ class _VariantEditPageState extends State<VariantEditPage> {
                           controller: _costInputController,
                           label: "label-cost".localize(),
                           hint: "hint-enter-variant-cost".localize(),
-                          inputType: TextInputType.number,
+                          inputType: TextInputType.numberWithOptions(decimal: true),
                           onChanged: (value) {
                             _dto.cost = double.tryParse(value);
                           },

@@ -386,7 +386,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                               controller: _priceInputController,
                               hint: "hint-enter-product-price".localize(),
                               errorText: _priceInputError,
-                              inputType: TextInputType.number,
+                              inputType: TextInputType.numberWithOptions(decimal: true),
                               onChanged: (value) {
                                 pm.editDTO?.price = double.tryParse(value);
                               },
@@ -396,7 +396,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                               controller: _costInputController,
                               label: "label-cost".localize(),
                               hint: "hint-enter-product-cost".localize(),
-                              inputType: TextInputType.number,
+                              inputType: TextInputType.numberWithOptions(decimal: true),
                               onChanged: (value) {
                                 pm.editDTO?.cost = double.tryParse(value);
                               },

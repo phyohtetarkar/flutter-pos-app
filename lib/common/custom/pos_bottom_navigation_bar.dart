@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:latte_pos/common/custom.dart';
 import 'package:latte_pos/main.dart';
 import 'package:latte_pos/menu/menu.dart';
-import 'package:latte_pos/sale/model/sale_products_search_display.dart';
-import 'package:latte_pos/sale/sale.dart';
 import 'package:latte_pos/service_locator.dart';
 import 'package:latte_pos/summary/summary.dart';
 import 'package:provider/provider.dart';
@@ -30,14 +28,15 @@ class POSBottomNavigationBar extends StatelessWidget {
         ));
         break;
       case 1:
-        route = createNavRoute(MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => serviceLocator.saleModel),
-            ChangeNotifierProvider(create: (_) => SaleProductsSearchDisplay()),
-            Provider(create: (_) => Provider.of<ServiceLocator>(context, listen: false).allCategoryModel),
-          ],
-          child: SalePage(),
-        ));
+        // route = createNavRoute(MultiProvider(
+        //   providers: [
+        //     ChangeNotifierProvider(create: (_) => serviceLocator.saleModel),
+        //     ChangeNotifierProvider(create: (_) => SaleProductsSearchDisplay()),
+        //     ChangeNotifierProvider(create: (_) => serviceLocator.shoppingCartModel),
+        //     Provider(create: (_) => Provider.of<ServiceLocator>(context, listen: false).allCategoryModel),
+        //   ],
+        //   child: SalePage(),
+        // ));
         break;
       case 2:
         route = createNavRoute(MenuPage());

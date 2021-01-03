@@ -449,20 +449,18 @@ class _ReportPageState extends State<ReportPage> {
               Card(
                 margin: const EdgeInsets.all(0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                  height: 100,
-                  child: Consumer<OverallReportModel>(
-                    builder: (context, model, child) {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
+                  padding: const EdgeInsets.all(16),
+                  child: IntrinsicHeight(
+                    child: Consumer<OverallReportModel>(
+                      builder: (context, model, child) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
                                     "label-total-sale".localize(),
@@ -474,32 +472,32 @@ class _ReportPageState extends State<ReportPage> {
                                     ),
                                   ),
                                   SizedBox(height: 10),
-                                  Text(
-                                    "${model.totalPrice.formatCurrency()}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 18,
-                                      fontFamily: "Roboto",
+                                  SizedBox(
+                                    child: FittedBox(
+                                      child: Text(
+                                        "${model.totalPrice.formatCurrency()}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 18,
+                                          fontFamily: "Roboto",
+                                        ),
+                                      ),
                                     ),
+                                    height: 24,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          VerticalDivider(
-                            width: 28,
-                            thickness: 1,
-                            color: Colors.grey[400],
-                            indent: 10,
-                            endIndent: 10,
-                          ),
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
+                            VerticalDivider(
+                              width: 28,
+                              thickness: 1,
+                              color: Colors.grey[400],
+                            ),
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
                                     "label-total-profit".localize(),
@@ -511,22 +509,27 @@ class _ReportPageState extends State<ReportPage> {
                                     ),
                                   ),
                                   SizedBox(height: 10),
-                                  Text(
-                                    "${model.totalProfit.formatCurrency()}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 18,
-                                      fontFamily: "Roboto",
+                                  SizedBox(
+                                    child: FittedBox(
+                                      child: Text(
+                                        "${model.totalProfit.formatCurrency()}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 18,
+                                          fontFamily: "Roboto",
+                                        ),
+                                      ),
                                     ),
+                                    height: 24,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

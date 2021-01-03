@@ -34,6 +34,7 @@ class CartItemsPage extends StatelessWidget {
       final model = context.read<ShoppingCartModel>();
       model.payPrice = null;
       model.change = null;
+      model.inputPrice.clear();
     });
   }
 

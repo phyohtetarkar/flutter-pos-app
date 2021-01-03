@@ -23,17 +23,16 @@ class SaleConfirmPage extends StatelessWidget {
     Navigator.of(context).pushAndRemoveUntil(route, (route) => route.isFirst);
   }
 
-  void _numClick(BuildContext context, int num) {
+  void _numClick(BuildContext context, dynamic num) {
     final model = context.read<ShoppingCartModel>();
-    String pay = model.payPrice?.toString() ?? '';
-    model.setPayPrice(int.tryParse("$pay$num"));
+    model.setInputPrice("$num");
   }
 
   void _deleteClick(BuildContext context) {
     final model = context.read<ShoppingCartModel>();
-    String pay = model.payPrice?.toString() ?? '';
-    if (pay.isNotEmpty) {
-      model.setPayPrice(int.tryParse(pay.substring(0, pay.length - 1)));
+    if (model.inputPrice.isNotEmpty) {
+      model.inputPrice.removeLast();
+      model.setPayPrice(double.tryParse(model.inputPrice.join()));
     }
   }
 
@@ -163,12 +162,12 @@ class SaleConfirmPage extends StatelessWidget {
                   child: Consumer<ShoppingCartModel>(
                     builder: (context, model, child) {
                       return Text(
-                        "${model.payPrice?.formatCurrency() ?? 'hint-pay-price'.localize()}",
+                        "${model.inputPrice.isNotEmpty ? model.inputPrice.join() : 'hint-pay-price'.localize()}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 20,
-                          fontWeight: model.payPrice != null ? FontWeight.bold : FontWeight.normal,
-                          color: model.payPrice != null ? Colors.black : Colors.grey,
+                          fontWeight: model.inputPrice.isNotEmpty ? FontWeight.bold : FontWeight.normal,
+                          color: model.inputPrice.isNotEmpty ? Colors.black : Colors.grey,
                         ),
                       );
                     },
@@ -219,7 +218,21 @@ class SaleConfirmPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  flex: 2,
+                  child: InkWell(
+                    onTap: () => _numClick(context, "."),
+                    child: Center(
+                      child: Text(
+                        ".",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                VerticalDivider(width: 1, color: Colors.grey),
+                Expanded(
                   child: InkWell(
                     onTap: () => _numClick(context, 0),
                     child: Center(
@@ -235,7 +248,6 @@ class SaleConfirmPage extends StatelessWidget {
                 ),
                 VerticalDivider(width: 1, color: Colors.grey),
                 Expanded(
-                  flex: 1,
                   child: Material(
                     color: Theme.of(context).primaryColor,
                     child: InkWell(

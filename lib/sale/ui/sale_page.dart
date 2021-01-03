@@ -217,7 +217,9 @@ class _FilterBar extends StatelessWidget {
         ),
       );
       var result = await BarcodeScanner.scan(options: options);
-      _addByBarcode(context, result.rawContent);
+      if (result.type == ResultType.Barcode) {
+        _addByBarcode(context, result.rawContent);
+      }
     } on PlatformException catch (e) {
       print(e.message);
     }
